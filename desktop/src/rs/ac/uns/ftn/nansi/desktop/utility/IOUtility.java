@@ -1,61 +1,54 @@
 package rs.ac.uns.ftn.nansi.desktop.utility;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.io.*;
 
 public class IOUtility {
 
-	public static Object loadFile() {
-		JFileChooser fileChooser = new JFileChooser();
+    public static Object loadFile() {
+        JFileChooser fileChooser = new JFileChooser();
 
-		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			try {
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
 
-				ObjectInputStream ois = new ObjectInputStream(
-						new FileInputStream(file));
+                ObjectInputStream ois = new ObjectInputStream(
+                        new FileInputStream(file));
 
-				Object o = ois.readObject();
-				ois.close();
+                Object o = ois.readObject();
+                ois.close();
 
-				return o;
+                return o;
 
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(null, "Error while exporting.",
-						"Error", JOptionPane.ERROR_MESSAGE);
-			}
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error while exporting.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
-		}
-		return null;
+        }
+        return null;
 
-	}
+    }
 
-	public static void saveFile(Object object) {
-		JFileChooser fileChooser = new JFileChooser();
+    public static void saveFile(Object object) {
+        JFileChooser fileChooser = new JFileChooser();
 
-		if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			try {
-				ObjectOutputStream oos = new ObjectOutputStream(
-						new FileOutputStream(file));
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(
+                        new FileOutputStream(file));
 
-				oos.writeObject(object);
+                oos.writeObject(object);
 
-				oos.close();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, "Error while exporting.",
-						"Error", JOptionPane.ERROR_MESSAGE);
-			}
+                oos.close();
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, "Error while exporting.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
-		}
+        }
 
-	}
+    }
 
 }

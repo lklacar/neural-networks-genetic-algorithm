@@ -1,176 +1,167 @@
 package rs.ac.uns.ftn.nansi.frames;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
 import net.miginfocom.swing.MigLayout;
 import rs.ac.uns.ftn.nansi.desktop.SimulationFrame;
 import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 
-import javax.swing.JRadioButton;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class NewSimulationFrame extends JFrame {
 
-	private static final long serialVersionUID = -7208953175439450443L;
-	private JTextField populationSizeTxt;
-	private JTextField hiddenLayerCountTxt;
-	private JTextField neuronCountTxt;
-	private JTextField leftAngleTxt;
-	private JTextField nextAngleTxt;
-	private JTextField rightAngleTxt;
-	private JTextField roadWidthTxt;
+    private static final long serialVersionUID = -7208953175439450443L;
+    private JTextField populationSizeTxt;
+    private JTextField hiddenLayerCountTxt;
+    private JTextField neuronCountTxt;
+    private JTextField leftAngleTxt;
+    private JTextField nextAngleTxt;
+    private JTextField rightAngleTxt;
+    private JTextField roadWidthTxt;
 
-	public NewSimulationFrame() {
+    public NewSimulationFrame() {
 
-		setTitle("New Simulation");
+        setTitle("New Simulation");
 
-		getContentPane().setLayout(
-				new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
+        getContentPane().setLayout(
+                new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
 
-		JLabel lblNewLabel = new JLabel("Population size: ");
-		getContentPane().add(lblNewLabel, "cell 0 0,alignx trailing");
+        JLabel lblNewLabel = new JLabel("Population size: ");
+        getContentPane().add(lblNewLabel, "cell 0 0,alignx trailing");
 
-		populationSizeTxt = new JTextField();
-		populationSizeTxt.setText("50");
-		getContentPane().add(populationSizeTxt, "cell 1 0,growx");
-		populationSizeTxt.setColumns(10);
+        populationSizeTxt = new JTextField();
+        populationSizeTxt.setText("50");
+        getContentPane().add(populationSizeTxt, "cell 1 0,growx");
+        populationSizeTxt.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("Hidden layer count:");
-		getContentPane().add(lblNewLabel_1, "cell 0 1,alignx trailing");
+        JLabel lblNewLabel_1 = new JLabel("Hidden layer count:");
+        getContentPane().add(lblNewLabel_1, "cell 0 1,alignx trailing");
 
-		hiddenLayerCountTxt = new JTextField();
-		hiddenLayerCountTxt.setText("4");
-		getContentPane().add(hiddenLayerCountTxt, "cell 1 1,growx");
-		hiddenLayerCountTxt.setColumns(10);
+        hiddenLayerCountTxt = new JTextField();
+        hiddenLayerCountTxt.setText("4");
+        getContentPane().add(hiddenLayerCountTxt, "cell 1 1,growx");
+        hiddenLayerCountTxt.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("Neurons per hidden layer:");
-		getContentPane().add(lblNewLabel_2, "cell 0 2,alignx trailing");
+        JLabel lblNewLabel_2 = new JLabel("Neurons per hidden layer:");
+        getContentPane().add(lblNewLabel_2, "cell 0 2,alignx trailing");
 
-		neuronCountTxt = new JTextField();
-		neuronCountTxt.setText("100");
-		getContentPane().add(neuronCountTxt, "cell 1 2,growx");
-		neuronCountTxt.setColumns(10);
+        neuronCountTxt = new JTextField();
+        neuronCountTxt.setText("100");
+        getContentPane().add(neuronCountTxt, "cell 1 2,growx");
+        neuronCountTxt.setColumns(10);
 
-		JLabel lblLeftAngleOffset = new JLabel("Left sensor angle offset:");
-		getContentPane().add(lblLeftAngleOffset, "cell 0 3,alignx trailing");
+        JLabel lblLeftAngleOffset = new JLabel("Left sensor angle offset:");
+        getContentPane().add(lblLeftAngleOffset, "cell 0 3,alignx trailing");
 
-		leftAngleTxt = new JTextField();
-		leftAngleTxt.setText("-80");
-		getContentPane().add(leftAngleTxt, "cell 1 3,growx");
-		leftAngleTxt.setColumns(10);
+        leftAngleTxt = new JTextField();
+        leftAngleTxt.setText("-80");
+        getContentPane().add(leftAngleTxt, "cell 1 3,growx");
+        leftAngleTxt.setColumns(10);
 
-		JLabel lblNextSensorOffset = new JLabel("Next sensor offset:");
-		getContentPane().add(lblNextSensorOffset, "cell 0 4,alignx trailing");
+        JLabel lblNextSensorOffset = new JLabel("Next sensor offset:");
+        getContentPane().add(lblNextSensorOffset, "cell 0 4,alignx trailing");
 
-		nextAngleTxt = new JTextField();
-		nextAngleTxt.setText("20");
-		getContentPane().add(nextAngleTxt, "cell 1 4,growx");
-		nextAngleTxt.setColumns(10);
+        nextAngleTxt = new JTextField();
+        nextAngleTxt.setText("20");
+        getContentPane().add(nextAngleTxt, "cell 1 4,growx");
+        nextAngleTxt.setColumns(10);
 
-		JLabel lblRightSensorAngle = new JLabel("Right sensor angle offset:");
-		getContentPane().add(lblRightSensorAngle, "cell 0 5,alignx trailing");
+        JLabel lblRightSensorAngle = new JLabel("Right sensor angle offset:");
+        getContentPane().add(lblRightSensorAngle, "cell 0 5,alignx trailing");
 
-		rightAngleTxt = new JTextField();
-		rightAngleTxt.setText("80");
-		getContentPane().add(rightAngleTxt, "cell 1 5,growx");
-		rightAngleTxt.setColumns(10);
+        rightAngleTxt = new JTextField();
+        rightAngleTxt.setText("80");
+        getContentPane().add(rightAngleTxt, "cell 1 5,growx");
+        rightAngleTxt.setColumns(10);
 
-		JLabel lblRoadWidth = new JLabel("Road width: ");
-		getContentPane().add(lblRoadWidth, "cell 0 6,alignx trailing");
+        JLabel lblRoadWidth = new JLabel("Road width: ");
+        getContentPane().add(lblRoadWidth, "cell 0 6,alignx trailing");
 
-		roadWidthTxt = new JTextField();
-		roadWidthTxt.setText("10");
-		getContentPane().add(roadWidthTxt, "cell 1 6,growx");
-		roadWidthTxt.setColumns(10);
+        roadWidthTxt = new JTextField();
+        roadWidthTxt.setText("10");
+        getContentPane().add(roadWidthTxt, "cell 1 6,growx");
+        roadWidthTxt.setColumns(10);
 
-		JLabel lblNewLabel_3 = new JLabel("Interpolation type: ");
-		getContentPane().add(lblNewLabel_3, "cell 0 7,alignx right");
+        JLabel lblNewLabel_3 = new JLabel("Interpolation type: ");
+        getContentPane().add(lblNewLabel_3, "cell 0 7,alignx right");
 
-		final JRadioButton rdbtnLinearInterpolation = new JRadioButton(
-				"Linear interpolation");
-		getContentPane().add(rdbtnLinearInterpolation, "flowx,cell 1 7");
+        final JRadioButton rdbtnLinearInterpolation = new JRadioButton(
+                "Linear interpolation");
+        getContentPane().add(rdbtnLinearInterpolation, "flowx,cell 1 7");
 
-		JButton startSimulationBtn = new JButton("Start simulation");
-		getContentPane().add(startSimulationBtn, "cell 0 8 2 1,growx");
+        JButton startSimulationBtn = new JButton("Start simulation");
+        getContentPane().add(startSimulationBtn, "cell 0 8 2 1,growx");
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800, 327);
-		setLocationRelativeTo(null);
-		setVisible(true);
-		getRootPane().setDefaultButton(startSimulationBtn);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(800, 327);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        getRootPane().setDefaultButton(startSimulationBtn);
 
-		final JRadioButton rdbtnLagrangeInterpolation = new JRadioButton(
-				"Lagrange interpolation");
-		getContentPane().add(rdbtnLagrangeInterpolation, "cell 1 7");
+        final JRadioButton rdbtnLagrangeInterpolation = new JRadioButton(
+                "Lagrange interpolation");
+        getContentPane().add(rdbtnLagrangeInterpolation, "cell 1 7");
 
-		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rdbtnLinearInterpolation);
-		buttonGroup.add(rdbtnLagrangeInterpolation);
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(rdbtnLinearInterpolation);
+        buttonGroup.add(rdbtnLagrangeInterpolation);
 
-		rdbtnLinearInterpolation.setSelected(true);
+        rdbtnLinearInterpolation.setSelected(true);
 
-		startSimulationBtn.addActionListener(new ActionListener() {
+        startSimulationBtn.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SimulationSettings settings = SimulationSettings.getInstance();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SimulationSettings settings = SimulationSettings.getInstance();
 
-				try {
-					settings.setPopulationSize(Integer
-							.parseInt(populationSizeTxt.getText()));
+                try {
+                    settings.setPopulationSize(Integer
+                            .parseInt(populationSizeTxt.getText()));
 
-					settings.setHiddenLayerCount(Integer
-							.parseInt(hiddenLayerCountTxt.getText()));
+                    settings.setHiddenLayerCount(Integer
+                            .parseInt(hiddenLayerCountTxt.getText()));
 
-					settings.setNeuronsPerHiddenLayer(Integer
-							.parseInt(neuronCountTxt.getText()));
+                    settings.setNeuronsPerHiddenLayer(Integer
+                            .parseInt(neuronCountTxt.getText()));
 
-					settings.setLeftAngle(Integer.parseInt(leftAngleTxt
-							.getText()));
+                    settings.setLeftAngle(Integer.parseInt(leftAngleTxt
+                            .getText()));
 
-					settings.setNextAngle(Integer.parseInt(nextAngleTxt
-							.getText()));
+                    settings.setNextAngle(Integer.parseInt(nextAngleTxt
+                            .getText()));
 
-					settings.setRightAngle(Integer.parseInt(rightAngleTxt
-							.getText()));
+                    settings.setRightAngle(Integer.parseInt(rightAngleTxt
+                            .getText()));
 
-					settings.setRoadWidth(Integer.parseInt(roadWidthTxt
-							.getText()));
+                    settings.setRoadWidth(Integer.parseInt(roadWidthTxt
+                            .getText()));
 
-					int interpolationType = 0;
-					if (rdbtnLinearInterpolation.isSelected())
-						interpolationType = 1;
-					else if (rdbtnLagrangeInterpolation.isSelected())
-						interpolationType = 2;
+                    int interpolationType = 0;
+                    if (rdbtnLinearInterpolation.isSelected())
+                        interpolationType = 1;
+                    else if (rdbtnLagrangeInterpolation.isSelected())
+                        interpolationType = 2;
 
-					settings.setGenerationType(interpolationType);
+                    settings.setGenerationType(interpolationType);
 
-					setVisible(false);
+                    setVisible(false);
 
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							new SimulationFrame();
-						}
-					});
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            new SimulationFrame();
+                        }
+                    });
 
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null,
-							"All fields must be integers.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "All fields must be integers.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
 
-			}
+            }
 
-		});
-	}
+        });
+    }
 
 }

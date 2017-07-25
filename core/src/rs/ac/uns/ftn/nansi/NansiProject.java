@@ -13,42 +13,42 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class NansiProject extends Game {
 
-	private ShapeRenderer shapeRenderer;
-	private Box2DDebugRenderer debugRenderer;
+    private ShapeRenderer shapeRenderer;
+    private Box2DDebugRenderer debugRenderer;
 
-	private GameWorld gameWorld;
+    private GameWorld gameWorld;
 
-	public void setGameWorld(GameWorld gameWorld) {
-		this.gameWorld = gameWorld;
-	}
+    public void setGameWorld(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+    }
 
-	private void addShortcuts() {
-		KeyboardShortcutsDisplay.addRow("Arrows -    Move Camera");
-		KeyboardShortcutsDisplay.addRow("Space  -    New Generation");
-		KeyboardShortcutsDisplay.addRow("P      -    Pause");
-	}
+    private void addShortcuts() {
+        KeyboardShortcutsDisplay.addRow("Arrows -    Move Camera");
+        KeyboardShortcutsDisplay.addRow("Space  -    New Generation");
+        KeyboardShortcutsDisplay.addRow("P      -    Pause");
+    }
 
-	@Override
-	public void create() {
-		shapeRenderer = new ShapeRenderer();
-		gameWorld = GameWorld.getInstance();
-		debugRenderer = new Box2DDebugRenderer();
-		InformationDisplay.setColor(Color.WHITE);
-		KeyboardShortcutsDisplay.setColor(Color.WHITE);
+    @Override
+    public void create() {
+        shapeRenderer = new ShapeRenderer();
+        gameWorld = GameWorld.getInstance();
+        debugRenderer = new Box2DDebugRenderer();
+        InformationDisplay.setColor(Color.WHITE);
+        KeyboardShortcutsDisplay.setColor(Color.WHITE);
 
-		addShortcuts();
+        addShortcuts();
 
-	}
+    }
 
-	@Override
-	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		gameWorld.draw(shapeRenderer, debugRenderer);
-		InformationDisplay.render();
-		KeyboardShortcutsDisplay.render();
+        gameWorld.draw(shapeRenderer, debugRenderer);
+        InformationDisplay.render();
+        KeyboardShortcutsDisplay.render();
 
-	}
+    }
 
 }

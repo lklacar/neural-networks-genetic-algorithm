@@ -6,5 +6,4 @@ public abstract class Interpolation {
 		return 0;
 	}
 	
-	
 }

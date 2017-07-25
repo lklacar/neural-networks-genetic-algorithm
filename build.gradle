@@ -13,6 +13,11 @@ buildscript {
     }
 }
 
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.8'
+    id 'java'
+}
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
@@ -33,6 +38,8 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+
 }
 
 project(":desktop") {
@@ -65,4 +72,11 @@ project(":core") {
 
 tasks.eclipse.doLast {
     delete ".project"
+}
+
+
+
+lombok {
+    version = "1.16.18"
+    sha256 = ""
 }
