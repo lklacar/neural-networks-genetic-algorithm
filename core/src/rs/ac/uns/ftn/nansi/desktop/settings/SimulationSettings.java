@@ -1,5 +1,8 @@
 package rs.ac.uns.ftn.nansi.desktop.settings;
 
+import lombok.Data;
+
+@Data
 public class SimulationSettings {
 
 	private static SimulationSettings instance = null;
@@ -11,13 +14,12 @@ public class SimulationSettings {
 	private int nextAngle = 20;
 	private int rightAngle = 80;
 	private int roadWidth = 50;
-	private int generationType = 1;
-	
-	
 
 	public int getGenerationType() {
 		return generationType;
 	}
+
+	private int generationType = 1;
 
 	public void setGenerationType(int generationType) {
 		this.generationType = generationType;
