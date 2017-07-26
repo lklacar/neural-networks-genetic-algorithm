@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.nansi.desktop.settings;
 
 import lombok.Data;
+import rs.ac.uns.ftn.nansi.world.InterpolationType;
 
 @Data
 public class SimulationSettings {
@@ -14,7 +15,7 @@ public class SimulationSettings {
     private int nextAngle = 20;
     private int rightAngle = 80;
     private int roadWidth = 50;
-    private int generationType = 1;
+    private InterpolationType interpolationType = InterpolationType.LINEAR;
     private int displaySensors = 2;
     private boolean autoNext = false;
 

@@ -23,14 +23,6 @@ public class KeyboardShortcutsDisplay {
         informationToDisplay.add(s);
     }
 
-    public static String getRow(int i) {
-        return informationToDisplay.get(i);
-    }
-
-    public static void clear() {
-        informationToDisplay.clear();
-    }
-
     public static void render() {
 
         batch.begin();
@@ -44,15 +36,5 @@ public class KeyboardShortcutsDisplay {
     public static void setColor(Color c) {
         font.setColor(c);
     }
-
-    public static void setRow(int i, String s) {
-        try {
-            informationToDisplay.set(i, s);
-        } catch (Exception ex) {
-            informationToDisplay.add(i, s);
-        }
-
-    }
-
 
 }

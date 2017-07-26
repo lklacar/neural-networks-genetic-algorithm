@@ -1,9 +1,7 @@
 package rs.ac.uns.ftn.nansi.genetic;
 
-import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.neuralnetwork.Matrix;
 import rs.ac.uns.ftn.nansi.neuralnetwork.NeuralNetwork;
-import rs.ac.uns.ftn.nansi.neuralnetwork.SigmoidActivationFunction;
 import rs.ac.uns.ftn.nansi.util.MathUtil;
 
 import java.io.Serializable;
@@ -11,51 +9,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class GeneticAlgorithm implements Serializable {
+public class GeneticAlgorithm implements TrainingAlgorithm<ArrayList<NeuralNetwork>>, Serializable {
 
     private static final long serialVersionUID = 1343352967654384459L;
-    private int inputLayerSize = 9;
-    private int[] hiddenLayers = {100, 100, 100, 100,};
-    private int outputLayers = 2;
 
     private ArrayList<NeuralNetwork> population;
 
-    public GeneticAlgorithm(int populationSize) {
-        population = new ArrayList<NeuralNetwork>();
+    private NeuralNetworkFactory neuralNetworkFactory;
 
-        inputLayerSize = calculateInputSize();
-        hiddenLayers = new int[SimulationSettings.getInstance()
-                .getHiddenLayerCount()];
-
-        for (int i = 0; i < hiddenLayers.length; i++)
-            hiddenLayers[i] = SimulationSettings.getInstance()
-                    .getNeuronsPerHiddenLayer();
-
+    public GeneticAlgorithm(NeuralNetworkFactory neuralNetworkFactory, int populationSize) {
+        this.population = new ArrayList<NeuralNetwork>();
+        this.neuralNetworkFactory = neuralNetworkFactory;
         addPopulation(populationSize);
-
     }
 
-    private void addPopulation(int populationSize) {
-        for (int i = 0; i < populationSize; i++) {
-            population.add(new NeuralNetwork(inputLayerSize, hiddenLayers,
-                    outputLayers, new SigmoidActivationFunction()));
-        }
-
-    }
-
-    private int calculateInputSize() {
-        int count = 0;
-        for (int i = SimulationSettings.getInstance().getLeftAngle(); i <= SimulationSettings
-                .getInstance().getRightAngle(); i += SimulationSettings
-                .getInstance().getNextAngle()) {
-
-            count += 1;
-        }
-
-        return count;
-    }
-
-    public void generateNewPopulation() {
+    @Override
+    public void nextIteration() {
         ArrayList<NeuralNetwork> newPopulation = new ArrayList<NeuralNetwork>();
         Collections.sort(population);
 
@@ -85,13 +54,17 @@ public class GeneticAlgorithm implements Serializable {
 
     }
 
+    @Override
+    public ArrayList<NeuralNetwork> getResult() {
+        return population;
+    }
+
     private ArrayList<NeuralNetwork> generateNewPair(NeuralNetwork a,
                                                      NeuralNetwork b) {
         Random random = new Random();
-        NeuralNetwork first = new NeuralNetwork(inputLayerSize, hiddenLayers,
-                outputLayers, new SigmoidActivationFunction());
-        NeuralNetwork second = new NeuralNetwork(inputLayerSize, hiddenLayers,
-                outputLayers, new SigmoidActivationFunction());
+        NeuralNetwork first = neuralNetworkFactory.create();
+        NeuralNetwork second = neuralNetworkFactory.create();
+
         double mutateTolerance = 0.02;
         for (int k = 0; k < a.getMatrices().size(); ++k) {
             Matrix M = a.getMatrices().get(k);
@@ -143,23 +116,28 @@ public class GeneticAlgorithm implements Serializable {
 
     private int choose() {
         double sum = 0;
-        for (NeuralNetwork nn : population)
+        for (NeuralNetwork nn : population) {
             sum += nn.getFitness();
+        }
 
         double random = MathUtil.randRange(0, sum);
 
         sum = 0;
         for (int i = 0; i < population.size(); i++) {
             sum += population.get(i).getFitness();
-            if (sum > random)
+            if (sum > random) {
                 return i;
+            }
         }
 
         return 0;
     }
 
-    public ArrayList<NeuralNetwork> getPopulation() {
-        return population;
+    private void addPopulation(int populationSize) {
+        for (int i = 0; i < populationSize; i++) {
+            population.add(neuralNetworkFactory.create());
+        }
+
     }
 
 }

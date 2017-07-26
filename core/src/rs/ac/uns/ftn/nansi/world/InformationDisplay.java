@@ -17,19 +17,6 @@ public class InformationDisplay {
     private static final int POS_X = 10;
     private static final int POS_Y = Gdx.graphics.getHeight() - 10;
 
-
-    public static void addRow(String s) {
-        informationToDisplay.add(s);
-    }
-
-    public static String getRow(int i) {
-        return informationToDisplay.get(i);
-    }
-
-    public static void clear() {
-        informationToDisplay.clear();
-    }
-
     public static void render() {
 
         batch.begin();
@@ -50,7 +37,5 @@ public class InformationDisplay {
         } catch (Exception ex) {
             informationToDisplay.add(i, s);
         }
-
     }
-
 }

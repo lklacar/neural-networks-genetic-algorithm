@@ -18,12 +18,6 @@ public class Road implements Serializable {
 
     }
 
-    public Road() {
-        super();
-        this.roadLines = new ArrayList<RoadLine>();
-        this.objectives = new ArrayList<RoadLine>();
-    }
-
     public void draw(ShapeRenderer renderer) {
         for (RoadLine rl : roadLines) {
             rl.draw(renderer);

@@ -3,8 +3,13 @@ package rs.ac.uns.ftn.nansi.world;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import lombok.val;
 import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.genetic.GeneticAlgorithm;
+import rs.ac.uns.ftn.nansi.genetic.NeuralNetworkFactory;
+import rs.ac.uns.ftn.nansi.genetic.TrainingAlgorithm;
+import rs.ac.uns.ftn.nansi.neuralnetwork.NeuralNetwork;
+import rs.ac.uns.ftn.nansi.neuralnetwork.SigmoidActivationFunction;
 import rs.ac.uns.ftn.nansi.util.Intersector;
 import rs.ac.uns.ftn.nansi.world.inputprocessors.CameraControlInputProcessor;
 import rs.ac.uns.ftn.nansi.world.inputprocessors.WorldInputProcessor;
@@ -26,7 +31,7 @@ public class GameWorld {
     // Genetic attributes
     private int populationSize = 50;
     private ArrayList<Car> population;
-    private GeneticAlgorithm ga;
+    private TrainingAlgorithm<ArrayList<NeuralNetwork>> geneticAlgorithm;
     private int generation = 1;
 
     private ArrayList<Car> allCars;
@@ -46,16 +51,13 @@ public class GameWorld {
         return allCars;
     }
 
-    public void setAllCars(ArrayList<Car> allCars) {
-        this.allCars = allCars;
-    }
 
     public void addPopulation() {
 
         for (int i = 0; i < populationSize; i++) {
             Car c = new Car(this, startingPos);
 
-            c.setNetwork(ga.getPopulation().get(i));
+            c.setNetwork(geneticAlgorithm.getResult().get(i));
 
             population.add(c);
             allCars.add(c);
@@ -63,17 +65,46 @@ public class GameWorld {
         }
     }
 
+
+    private int calculateInputSize() {
+        int count = 0;
+        for (int i = SimulationSettings.getInstance().getLeftAngle(); i <= SimulationSettings
+                .getInstance().getRightAngle(); i += SimulationSettings
+                .getInstance().getNextAngle()) {
+
+            count += 1;
+        }
+
+        return count;
+    }
+
     private GameWorld() {
 
         populationSize = SimulationSettings.getInstance().getPopulationSize();
 
         this.allCars = new ArrayList<Car>();
-        this.ga = new GeneticAlgorithm(populationSize);
+
+        val inputLayerSize = calculateInputSize();
+        val hiddenLayers = new int[SimulationSettings.getInstance()
+                .getHiddenLayerCount()];
+
+        for (int i = 0; i < hiddenLayers.length; i++)
+            hiddenLayers[i] = SimulationSettings.getInstance()
+                    .getNeuronsPerHiddenLayer();
+
+
+        val outputLayers = 2;
+        val activationFunction = new SigmoidActivationFunction();
+
+
+        this.geneticAlgorithm = new GeneticAlgorithm(new NeuralNetworkFactory(inputLayerSize, hiddenLayers, outputLayers, activationFunction), populationSize);
+
+
         this.box2dWorld = new World(new Vector2(0, 0), true);
         this.camera = new OrthographicCamera(100, 76);
         this.camera.translate(new Vector2(50, 76 / 2));
         this.camera.update();
-        this.road = Generator.generate(SimulationSettings.getInstance().getGenerationType());
+        this.road = new RoadFactory(SimulationSettings.getInstance().getInterpolationType()).create();
         this.population = new ArrayList<Car>();
         this.startingPos = getStartingPos(this.road.getObjectives().get(180));
 
@@ -113,9 +144,9 @@ public class GameWorld {
     }
 
     public void nextGenerationReset() {
-        Collections.sort(ga.getPopulation());
+        Collections.sort(geneticAlgorithm.getResult());
 
-        ga.generateNewPopulation();
+        geneticAlgorithm.nextIteration();
 
         generation++;
 
@@ -260,23 +291,22 @@ public class GameWorld {
                 if (Intersector.intersectSegmentCircle(rl.getP1(), rl.getP2(),
                         car.getBody().getPosition(), 0.1f))
 
-                    if (car.addFittnes(rl))
+                    if (car.addFitness(rl))
                         time = 0;
 
         }
 
         // Remove dead cars from the population
-        for (Car c : remove)
-            population.remove(c);
+        population.removeAll(remove);
 
     }
 
-    public GeneticAlgorithm getGa() {
-        return ga;
+    public TrainingAlgorithm getGeneticAlgorithm() {
+        return geneticAlgorithm;
     }
 
-    public void setGa(GeneticAlgorithm ga) {
-        this.ga = ga;
+    public void setGeneticAlgorithm(GeneticAlgorithm geneticAlgorithm) {
+        this.geneticAlgorithm = geneticAlgorithm;
     }
 
     // Getters
@@ -288,11 +318,8 @@ public class GameWorld {
         return road;
     }
 
-    public void tooglePause() {
-        if (pause)
-            pause = false;
-        else
-            pause = true;
+    public void togglePause() {
+        pause = !pause;
     }
 
     public void setRoad(Road generate) {

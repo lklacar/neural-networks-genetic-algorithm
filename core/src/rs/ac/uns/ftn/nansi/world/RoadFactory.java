@@ -2,22 +2,24 @@ package rs.ac.uns.ftn.nansi.world;
 
 import com.badlogic.gdx.math.Vector2;
 import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
-import rs.ac.uns.ftn.nansi.util.Interpolation;
-import rs.ac.uns.ftn.nansi.util.LagrangeInterpolation;
-import rs.ac.uns.ftn.nansi.util.LinearInterpolation;
-import rs.ac.uns.ftn.nansi.util.MathUtil;
+import rs.ac.uns.ftn.nansi.util.*;
 
 import java.util.ArrayList;
 
-public class Generator {
+public class RoadFactory implements Factory<Road> {
+
+    private InterpolationType type;
 
     /**
      * @param type (1 - linear, 2 - lagrange);
-     * @return Road
      */
+    public RoadFactory(InterpolationType type) {
+        this.type = type;
+    }
 
-    public static Road generate(int type) {
 
+    @Override
+    public Road create() {
         double[] x = new double[37];
         double[] y = new double[37];
 
@@ -28,11 +30,10 @@ public class Generator {
 
         Interpolation interpolation;
 
-        if (type == 1) {
+        if (type == InterpolationType.LINEAR) {
             interpolation = new LinearInterpolation(x, y);
         } else {
             interpolation = new LagrangeInterpolation(x, y);
-
         }
 
         ArrayList<Vector2> innerRoadPoints = new ArrayList<Vector2>();
@@ -73,7 +74,5 @@ public class Generator {
         innerRoadLines.addAll(outerRoadLines);
 
         return new Road(innerRoadLines, objectives);
-
     }
-
 }

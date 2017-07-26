@@ -5,7 +5,7 @@ import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.desktop.utility.IOUtility;
 import rs.ac.uns.ftn.nansi.genetic.GeneticAlgorithm;
 import rs.ac.uns.ftn.nansi.world.GameWorld;
-import rs.ac.uns.ftn.nansi.world.Generator;
+import rs.ac.uns.ftn.nansi.world.RoadFactory;
 import rs.ac.uns.ftn.nansi.world.Road;
 
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class OptionsPanel extends JPanel {
                 "Display sensors for all");
         rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                if (rdbtnNewRadioButton_1.isSelected() == true)
+                if (rdbtnNewRadioButton_1.isSelected())
                     SimulationSettings.getInstance().setDisplaySensors(1);
 
             }
@@ -48,7 +48,7 @@ public class OptionsPanel extends JPanel {
                 "Display sensors for first only");
         rdbtnNewRadioButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (rdbtnNewRadioButton.isSelected() == true)
+                if (rdbtnNewRadioButton.isSelected())
                     SimulationSettings.getInstance().setDisplaySensors(2);
             }
         });
@@ -83,8 +83,8 @@ public class OptionsPanel extends JPanel {
         btnNewButton_5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GameWorld.getInstance().setRoad(
-                        Generator.generate(SimulationSettings.getInstance()
-                                .getGenerationType()));
+                        new RoadFactory(SimulationSettings.getInstance()
+                                .getInterpolationType()).create());
                 GameWorld.getInstance().nextGenerationReset();
             }
         });
@@ -97,7 +97,7 @@ public class OptionsPanel extends JPanel {
                     GeneticAlgorithm ga = (GeneticAlgorithm) IOUtility
                             .loadFile();
                     if (ga != null) {
-                        GameWorld.getInstance().setGa(ga);
+                        GameWorld.getInstance().setGeneticAlgorithm(ga);
                         GameWorld.getInstance().sameGenerationReset();
                     }
                 } catch (Exception ex) {
@@ -129,7 +129,7 @@ public class OptionsPanel extends JPanel {
         btnNewButton_3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                IOUtility.saveFile(GameWorld.getInstance().getGa());
+                IOUtility.saveFile(GameWorld.getInstance().getGeneticAlgorithm());
             }
         });
         add(btnNewButton_3, "cell 0 9,growx");

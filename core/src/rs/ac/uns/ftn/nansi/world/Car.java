@@ -23,7 +23,10 @@ public class Car {
 
     public Car(GameWorld gameWorld, Vector2 pos) {
         this.objectives = new HashSet<RoadLine>();
-        this.body = Box2DFactory.createCircle(gameWorld.getWorld(), pos);
+
+        this.body = new Box2DFactory(gameWorld.getWorld(), pos).create();
+
+
         this.sensors = new ArrayList<CarSensor>();
 
         for (int i = SimulationSettings.getInstance().getLeftAngle(); i <= SimulationSettings
@@ -32,7 +35,6 @@ public class Car {
             sensors.add(new CarSensor(this, gameWorld.getRoad(), i));
 
         }
-
     }
 
     public void drawSensors(ShapeRenderer renderer) {
@@ -50,9 +52,6 @@ public class Car {
         return body;
     }
 
-    public void setBody(Body body) {
-        this.body = body;
-    }
 
     public NeuralNetwork getNetwork() {
         return network;
@@ -62,13 +61,6 @@ public class Car {
         this.network = network;
     }
 
-    public ArrayList<CarSensor> getSensors() {
-        return sensors;
-    }
-
-    public void setSensors(ArrayList<CarSensor> sensors) {
-        this.sensors = sensors;
-    }
 
     public void update() {
 
@@ -92,7 +84,7 @@ public class Car {
 
     }
 
-    public boolean addFittnes(RoadLine objective) {
+    public boolean addFitness(RoadLine objective) {
 
         if (objectives.contains(objective))
             return false;

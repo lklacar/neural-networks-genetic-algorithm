@@ -56,7 +56,7 @@ public class CarSensor {
 
         }
 
-        int index = 0;
+        int index;
         try {
             index = lens.indexOf(Collections.min(lens));
             return results.get(index);

@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.nansi.frames;
 import net.miginfocom.swing.MigLayout;
 import rs.ac.uns.ftn.nansi.desktop.SimulationFrame;
 import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
+import rs.ac.uns.ftn.nansi.world.InterpolationType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -136,13 +137,13 @@ public class NewSimulationFrame extends JFrame {
                     settings.setRoadWidth(Integer.parseInt(roadWidthTxt
                             .getText()));
 
-                    int interpolationType = 0;
+                    InterpolationType interpolationType = InterpolationType.LINEAR;
                     if (rdbtnLinearInterpolation.isSelected())
-                        interpolationType = 1;
+                        interpolationType = InterpolationType.LINEAR;
                     else if (rdbtnLagrangeInterpolation.isSelected())
-                        interpolationType = 2;
+                        interpolationType = InterpolationType.LAGRANGE;
 
-                    settings.setGenerationType(interpolationType);
+                    settings.setInterpolationType(interpolationType);
 
                     setVisible(false);
 
