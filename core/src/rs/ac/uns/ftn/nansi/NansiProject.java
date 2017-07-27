@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.nansi;
 
+import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.world.GameWorld;
 import rs.ac.uns.ftn.nansi.world.InformationDisplay;
 import rs.ac.uns.ftn.nansi.world.KeyboardShortcutsDisplay;
@@ -17,9 +18,11 @@ public class NansiProject extends Game {
     private Box2DDebugRenderer debugRenderer;
 
     private GameWorld gameWorld;
+    private SimulationSettings settings;
 
-    public void setGameWorld(GameWorld gameWorld) {
-        this.gameWorld = gameWorld;
+    public NansiProject(SimulationSettings settings) {
+
+        this.settings = settings;
     }
 
     private void addShortcuts() {
@@ -31,13 +34,11 @@ public class NansiProject extends Game {
     @Override
     public void create() {
         shapeRenderer = new ShapeRenderer();
-        gameWorld = GameWorld.getInstance();
+        gameWorld = new GameWorld(settings);
         debugRenderer = new Box2DDebugRenderer();
         InformationDisplay.setColor(Color.WHITE);
         KeyboardShortcutsDisplay.setColor(Color.WHITE);
-
         addShortcuts();
-
     }
 
     @Override
@@ -51,4 +52,7 @@ public class NansiProject extends Game {
 
     }
 
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
 }

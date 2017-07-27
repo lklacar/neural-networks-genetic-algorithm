@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.nansi.world;
 
 import com.badlogic.gdx.math.Vector2;
-import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.util.*;
 
 import java.util.ArrayList;
@@ -9,12 +8,15 @@ import java.util.ArrayList;
 public class RoadFactory implements Factory<Road> {
 
     private InterpolationType type;
+    private float roadWidth;
 
     /**
-     * @param type (1 - linear, 2 - lagrange);
+     * @param type      (1 - linear, 2 - lagrange);
+     * @param roadWidth
      */
-    public RoadFactory(InterpolationType type) {
+    public RoadFactory(InterpolationType type, float roadWidth) {
         this.type = type;
+        this.roadWidth = roadWidth;
     }
 
 
@@ -49,7 +51,7 @@ public class RoadFactory implements Factory<Road> {
             Vector2 v = new Vector2(0f, (float) interpolation.value(i));
             Vector2 v2 = new Vector2(v);
 
-            v2.add(0, SimulationSettings.getInstance().getRoadWidth());
+            v2.add(0, roadWidth);
 
             v.rotate((float) i);
             v2.rotate((float) i);

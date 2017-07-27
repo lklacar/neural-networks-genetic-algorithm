@@ -17,7 +17,7 @@ public class OptionsPanel extends JPanel {
 
     private static final long serialVersionUID = 7830452536175849875L;
 
-    public OptionsPanel() {
+    public OptionsPanel(final SimulationSettings settings, final GameWorld gameWorld) {
 
         setBorder(BorderFactory.createTitledBorder("Options"));
 
@@ -38,7 +38,7 @@ public class OptionsPanel extends JPanel {
         rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 if (rdbtnNewRadioButton_1.isSelected())
-                    SimulationSettings.getInstance().setDisplaySensors(1);
+                    settings.setDisplaySensors(1);
 
             }
         });
@@ -49,7 +49,7 @@ public class OptionsPanel extends JPanel {
         rdbtnNewRadioButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (rdbtnNewRadioButton.isSelected())
-                    SimulationSettings.getInstance().setDisplaySensors(2);
+                    settings.setDisplaySensors(2);
             }
         });
         rdbtnNewRadioButton.setSelected(true);
@@ -62,7 +62,7 @@ public class OptionsPanel extends JPanel {
                 "Auto next generation");
         chckbxNewCheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SimulationSettings.getInstance().setAutoNext(
+                settings.setAutoNext(
                         chckbxNewCheckBox.isSelected());
 
             }
@@ -73,7 +73,7 @@ public class OptionsPanel extends JPanel {
         btnNewSimulation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                GameWorld.getInstance().nextGenerationReset();
+                gameWorld.nextGenerationReset();
 
             }
         });
@@ -82,10 +82,10 @@ public class OptionsPanel extends JPanel {
         JButton btnNewButton_5 = new JButton("Generate new road");
         btnNewButton_5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GameWorld.getInstance().setRoad(
-                        new RoadFactory(SimulationSettings.getInstance()
-                                .getInterpolationType()).create());
-                GameWorld.getInstance().nextGenerationReset();
+                gameWorld.setRoad(
+                        new RoadFactory(settings
+                                .getInterpolationType(), settings.getRoadWidth()).create());
+                gameWorld.nextGenerationReset();
             }
         });
         add(btnNewButton_5, "cell 0 4,growx");
@@ -97,8 +97,8 @@ public class OptionsPanel extends JPanel {
                     GeneticAlgorithm ga = (GeneticAlgorithm) IOUtility
                             .loadFile();
                     if (ga != null) {
-                        GameWorld.getInstance().setGeneticAlgorithm(ga);
-                        GameWorld.getInstance().sameGenerationReset();
+                        gameWorld.setGeneticAlgorithm(ga);
+                        gameWorld.sameGenerationReset();
                     }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
@@ -118,8 +118,8 @@ public class OptionsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Road road = (Road) IOUtility.loadFile();
                 if (road != null) {
-                    GameWorld.getInstance().setRoad(road);
-                    GameWorld.getInstance().sameGenerationReset();
+                    gameWorld.setRoad(road);
+                    gameWorld.sameGenerationReset();
                 }
             }
         });
@@ -129,7 +129,7 @@ public class OptionsPanel extends JPanel {
         btnNewButton_3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                IOUtility.saveFile(GameWorld.getInstance().getGeneticAlgorithm());
+                IOUtility.saveFile(gameWorld.getGeneticAlgorithm());
             }
         });
         add(btnNewButton_3, "cell 0 9,growx");
@@ -137,7 +137,7 @@ public class OptionsPanel extends JPanel {
         JButton btnNewButton_4 = new JButton("Export current road");
         btnNewButton_4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                IOUtility.saveFile(GameWorld.getInstance().getRoad());
+                IOUtility.saveFile(gameWorld.getRoad());
 
             }
         });

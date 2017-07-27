@@ -12,7 +12,7 @@ public class InformationPanel extends JPanel {
 
     private static final long serialVersionUID = -6926107357361257974L;
 
-    public InformationPanel() {
+    public InformationPanel(GameWorld gameWorld) {
 
         setBorder(BorderFactory.createTitledBorder("Population information:"));
         setLayout(new MigLayout("", "[440px]", "[278px]"));
@@ -34,7 +34,7 @@ public class InformationPanel extends JPanel {
                 try {
                     model.clear();
                     int i = 1;
-                    for (Car c : GameWorld.getInstance().getAllCars()) {
+                    for (Car c : gameWorld.getAllCars()) {
                         model.addElement("ID: " + Integer.toString(i) + "   "
                                 + Double.toString(c.getNetwork().getFitness()));
                         i++;

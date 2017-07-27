@@ -25,8 +25,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class GameWorld {
-
-    private static GameWorld instance = null;
+    private final SimulationSettings settings;
 
     // Genetic attributes
     private int populationSize = 50;
@@ -55,7 +54,7 @@ public class GameWorld {
     public void addPopulation() {
 
         for (int i = 0; i < populationSize; i++) {
-            Car c = new Car(this, startingPos);
+            Car c = new Car(settings.getLeftAngle(), settings.getRightAngle(), settings.getNextAngle(), this, startingPos);
 
             c.setNetwork(geneticAlgorithm.getResult().get(i));
 
@@ -68,9 +67,7 @@ public class GameWorld {
 
     private int calculateInputSize() {
         int count = 0;
-        for (int i = SimulationSettings.getInstance().getLeftAngle(); i <= SimulationSettings
-                .getInstance().getRightAngle(); i += SimulationSettings
-                .getInstance().getNextAngle()) {
+        for (int i = settings.getLeftAngle(); i <= settings.getRightAngle(); i += settings.getNextAngle()) {
 
             count += 1;
         }
@@ -78,18 +75,18 @@ public class GameWorld {
         return count;
     }
 
-    private GameWorld() {
-
-        populationSize = SimulationSettings.getInstance().getPopulationSize();
+    public GameWorld(SimulationSettings settings) {
+        this.settings = settings;
+        populationSize = settings.getPopulationSize();
 
         this.allCars = new ArrayList<Car>();
 
         val inputLayerSize = calculateInputSize();
-        val hiddenLayers = new int[SimulationSettings.getInstance()
+        val hiddenLayers = new int[settings
                 .getHiddenLayerCount()];
 
         for (int i = 0; i < hiddenLayers.length; i++)
-            hiddenLayers[i] = SimulationSettings.getInstance()
+            hiddenLayers[i] = settings
                     .getNeuronsPerHiddenLayer();
 
 
@@ -104,20 +101,13 @@ public class GameWorld {
         this.camera = new OrthographicCamera(100, 76);
         this.camera.translate(new Vector2(50, 76 / 2));
         this.camera.update();
-        this.road = new RoadFactory(SimulationSettings.getInstance().getInterpolationType()).create();
+        this.road = new RoadFactory(settings.getInterpolationType(), settings.getRoadWidth()).create();
         this.population = new ArrayList<Car>();
         this.startingPos = getStartingPos(this.road.getObjectives().get(180));
 
         setupKeyboardInput();
         addPopulation();
 
-    }
-
-    public static GameWorld getInstance() {
-        if (instance == null)
-            instance = new GameWorld();
-
-        return instance;
     }
 
     // Public Methods
@@ -189,7 +179,7 @@ public class GameWorld {
         time++;
 
         if ((population.size() == 0 || time > 150)
-                && SimulationSettings.getInstance().isAutoNext()) {
+                && settings.isAutoNext()) {
 
             nextGenerationReset();
 
@@ -243,10 +233,10 @@ public class GameWorld {
 
         try {
 
-            if (SimulationSettings.getInstance().getDisplaySensors() == 2)
+            if (settings.getDisplaySensors() == 2)
                 getFittest().drawSensors(shapeRenderer);
 
-            else if (SimulationSettings.getInstance().getDisplaySensors() == 1) {
+            else if (settings.getDisplaySensors() == 1) {
 
                 for (Car c : population)
                     c.drawSensors(shapeRenderer);

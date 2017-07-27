@@ -6,8 +6,6 @@ import rs.ac.uns.ftn.nansi.world.InterpolationType;
 @Data
 public class SimulationSettings {
 
-    private static SimulationSettings instance = null;
-
     private int populationSize = 50;
     private int hiddenLayerCount = 4;
     private int neuronsPerHiddenLayer = 100;
@@ -18,16 +16,5 @@ public class SimulationSettings {
     private InterpolationType interpolationType = InterpolationType.LINEAR;
     private int displaySensors = 2;
     private boolean autoNext = false;
-
-    private SimulationSettings() {
-
-    }
-
-    public static SimulationSettings getInstance() {
-        if (instance == null)
-            instance = new SimulationSettings();
-
-        return instance;
-    }
 
 }

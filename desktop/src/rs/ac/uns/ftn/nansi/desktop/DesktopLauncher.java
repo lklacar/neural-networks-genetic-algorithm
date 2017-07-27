@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.nansi.desktop;
 
+import lombok.val;
 import rs.ac.uns.ftn.nansi.frames.NewSimulationFrame;
 
 import javax.swing.*;
@@ -8,38 +9,27 @@ import javax.swing.UIManager.LookAndFeelInfo;
 public class DesktopLauncher {
 
     private static void showFrame() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new NewSimulationFrame();
-            }
-        });
+        val newSimulationFrame = new NewSimulationFrame();
+        newSimulationFrame.setVisible(true);
     }
 
-    private static void setLookAndFeel() {
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-
-            try {
-                UIManager.setLookAndFeel(UIManager
-                        .getCrossPlatformLookAndFeelClassName());
-            } catch (Exception ignored) {
-
+    private static void setLookAndFeel() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
         }
     }
 
     public static void main(String[] args) {
-        setLookAndFeel();
+        try {
+            setLookAndFeel();
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         showFrame();
-
     }
 
 }

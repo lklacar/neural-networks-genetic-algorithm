@@ -3,7 +3,6 @@ package rs.ac.uns.ftn.nansi.world;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.factories.Box2DFactory;
 import rs.ac.uns.ftn.nansi.neuralnetwork.Matrix;
 import rs.ac.uns.ftn.nansi.neuralnetwork.NeuralNetwork;
@@ -13,6 +12,9 @@ import java.util.HashSet;
 
 public class Car {
 
+    private final int leftAngle;
+    private final int rightAngle;
+    private final int nextAngle;
     private Body body;
 
     private NeuralNetwork network;
@@ -21,17 +23,17 @@ public class Car {
 
     private HashSet<RoadLine> objectives;
 
-    public Car(GameWorld gameWorld, Vector2 pos) {
+    public Car(int leftAngle, int rightAngle, int nextAngle, GameWorld gameWorld, Vector2 pos) {
+        this.leftAngle = leftAngle;
+        this.rightAngle = rightAngle;
+        this.nextAngle = nextAngle;
         this.objectives = new HashSet<RoadLine>();
 
         this.body = new Box2DFactory(gameWorld.getWorld(), pos).create();
 
-
         this.sensors = new ArrayList<CarSensor>();
 
-        for (int i = SimulationSettings.getInstance().getLeftAngle(); i <= SimulationSettings
-                .getInstance().getRightAngle(); i += SimulationSettings
-                .getInstance().getNextAngle()) {
+        for (int i = this.leftAngle; i <= this.rightAngle; i += this.nextAngle) {
             sensors.add(new CarSensor(this, gameWorld.getRoad(), i));
 
         }

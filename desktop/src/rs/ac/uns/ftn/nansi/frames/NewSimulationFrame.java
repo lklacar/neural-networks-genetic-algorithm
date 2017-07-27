@@ -1,7 +1,7 @@
 package rs.ac.uns.ftn.nansi.frames;
 
+import lombok.val;
 import net.miginfocom.swing.MigLayout;
-import rs.ac.uns.ftn.nansi.desktop.SimulationFrame;
 import rs.ac.uns.ftn.nansi.desktop.settings.SimulationSettings;
 import rs.ac.uns.ftn.nansi.world.InterpolationType;
 
@@ -96,7 +96,6 @@ public class NewSimulationFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 327);
         setLocationRelativeTo(null);
-        setVisible(true);
         getRootPane().setDefaultButton(startSimulationBtn);
 
         final JRadioButton rdbtnLagrangeInterpolation = new JRadioButton(
@@ -109,57 +108,48 @@ public class NewSimulationFrame extends JFrame {
 
         rdbtnLinearInterpolation.setSelected(true);
 
-        startSimulationBtn.addActionListener(new ActionListener() {
+        startSimulationBtn.addActionListener(e -> {
+            SimulationSettings settings = new SimulationSettings();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SimulationSettings settings = SimulationSettings.getInstance();
+            try {
+                settings.setPopulationSize(Integer
+                        .parseInt(populationSizeTxt.getText()));
 
-                try {
-                    settings.setPopulationSize(Integer
-                            .parseInt(populationSizeTxt.getText()));
+                settings.setHiddenLayerCount(Integer
+                        .parseInt(hiddenLayerCountTxt.getText()));
 
-                    settings.setHiddenLayerCount(Integer
-                            .parseInt(hiddenLayerCountTxt.getText()));
+                settings.setNeuronsPerHiddenLayer(Integer
+                        .parseInt(neuronCountTxt.getText()));
 
-                    settings.setNeuronsPerHiddenLayer(Integer
-                            .parseInt(neuronCountTxt.getText()));
+                settings.setLeftAngle(Integer.parseInt(leftAngleTxt
+                        .getText()));
 
-                    settings.setLeftAngle(Integer.parseInt(leftAngleTxt
-                            .getText()));
+                settings.setNextAngle(Integer.parseInt(nextAngleTxt
+                        .getText()));
 
-                    settings.setNextAngle(Integer.parseInt(nextAngleTxt
-                            .getText()));
+                settings.setRightAngle(Integer.parseInt(rightAngleTxt
+                        .getText()));
 
-                    settings.setRightAngle(Integer.parseInt(rightAngleTxt
-                            .getText()));
+                settings.setRoadWidth(Integer.parseInt(roadWidthTxt
+                        .getText()));
 
-                    settings.setRoadWidth(Integer.parseInt(roadWidthTxt
-                            .getText()));
+                InterpolationType interpolationType = InterpolationType.LINEAR;
+                if (rdbtnLinearInterpolation.isSelected())
+                    interpolationType = InterpolationType.LINEAR;
+                else if (rdbtnLagrangeInterpolation.isSelected())
+                    interpolationType = InterpolationType.LAGRANGE;
 
-                    InterpolationType interpolationType = InterpolationType.LINEAR;
-                    if (rdbtnLinearInterpolation.isSelected())
-                        interpolationType = InterpolationType.LINEAR;
-                    else if (rdbtnLagrangeInterpolation.isSelected())
-                        interpolationType = InterpolationType.LAGRANGE;
+                settings.setInterpolationType(interpolationType);
 
-                    settings.setInterpolationType(interpolationType);
+                setVisible(false);
 
-                    setVisible(false);
+                val simulationFrame = new SimulationFrame(settings);
+                simulationFrame.setVisible(true);
 
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            new SimulationFrame();
-                        }
-                    });
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null,
-                            "All fields must be integers.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                        "All fields must be integers.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
         });
